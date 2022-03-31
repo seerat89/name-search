@@ -1,7 +1,35 @@
+import { useState } from 'react';
 import './App.css';
-import gitHublogo from './assets/GitHub.png';
+import Footer from './Components/Footer';
+import Main from './Components/Main';
 
 function App() {
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [nationality, setNationality] = useState('');
+  const [name, setName] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (name) {
+      fetch(`https://api.agify.io/?name=${name}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setAge(data);
+        });
+      fetch(`https://api.genderize.io?name=${name}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setGender(data);
+        });
+      fetch(`https://api.nationalize.io?name=${name}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setNationality(data);
+        });
+    }
+  };
+
   return (
     <main>
       <header>
@@ -9,65 +37,20 @@ function App() {
         <p>Find the age, gender and nationality of a name.</p>
       </header>
       <section className="section-searchbox">
-        <form>
-          <input type="text" name="search" placeholder="Search" />
+        <form onSubmit={(e) => handleSearch(e)}>
+          <input
+            type="text"
+            name="search"
+            placeholder="Search"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <button type="submit">Search</button>
         </form>
-        <h2>Timo</h2>
+        <h2>{age.name && age.name}</h2>
       </section>
-      <section className="section-main">
-        <div>
-          <h3>Age</h3>
-          <ul>
-            <li>Age:</li>
-            <li>Count:</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Gender</h3>
-          <ul>
-            <li>Gender:</li>
-            <li>Probability:</li>
-            <li>Count:</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Nationality</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Country</th>
-                <th>Probability</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Finland</td>
-                <td>90%</td>
-              </tr>
-              <tr>
-                <td>USA</td>
-                <td>20%</td>
-              </tr>
-              <tr>
-                <td>Denmark</td>
-                <td>20%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-      <footer>
-        <span>
-          <a
-            href="https://github.com/seerat89/random-advice-generator"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <img src={gitHublogo} alt="GitHub Logo" />
-          </a>
-        </span>
-      </footer>
+      {age.name && <Main age={age} gender={gender} nationality={nationality} />}
+      <Footer />
     </main>
   );
 }
