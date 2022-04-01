@@ -32,6 +32,8 @@ body {
     var(--secondaryTextColor)
   );
   color: var(--textColor);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 main {
@@ -114,6 +116,8 @@ button:hover {
 
 .section-searchbox h2 {
   font-size: 3rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .section-main {
@@ -159,6 +163,7 @@ td {
 
 footer {
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 footer img {
@@ -186,6 +191,9 @@ footer img:hover {
 }
 
 @media screen and (max-width: 540px) {
+  .section-searchbox h2 {
+    font-size: 2.5rem;
+  }
   input[type='text'] {
     border-radius: 5px;
     width: 95%;
